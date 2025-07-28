@@ -11,7 +11,7 @@
 
 > 🎓 This project was developed as a **Bachelor's Thesis** at the **Faculty of Mathematics and Computer Science, Ovidius University of Constanța**.
 
-[![Watch the LastBite Demo Video](https://youtu.be/qXYsH64pEyA)
+[![Click to watch the LastBite Demo Video](https://github.com/oanacristina21/LastBite-A-Web-Application-for-a-Sustainable-Food-System/issues/1#issue-3270052384)
 
 ---
 
