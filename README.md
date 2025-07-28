@@ -11,7 +11,7 @@
 
 > 🎓 This project was developed as a **Bachelor's Thesis** at the **Faculty of Mathematics and Computer Science, Ovidius University of Constanța**.
 
-[![Click to watch the LastBite Demo Video](https://github.com/oanacristina21/LastBite-A-Web-Application-for-a-Sustainable-Food-System/issues/1#issue-3270052384)](https://youtu.be/qXYsH64pEyA)
+[![Click to watch the LastBite Demo Video]([https://github.com/oanacristina21/LastBite-A-Web-Application-for-a-Sustainable-Food-System/issues/1#issue-3270052384](https://private-user-images.githubusercontent.com/82108871/471537998-38a9301a-93cb-4b78-8012-58613e747136.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NTM3MTIxOTEsIm5iZiI6MTc1MzcxMTg5MSwicGF0aCI6Ii84MjEwODg3MS80NzE1Mzc5OTgtMzhhOTMwMWEtOTNjYi00Yjc4LTgwMTItNTg2MTNlNzQ3MTM2LnBuZz9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNTA3MjglMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjUwNzI4VDE0MTEzMVomWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPTUwZGFjNWFkZDljOWU3NTYyOWMwYWIyMmM5ZGY0MmY3ZDI4ZjAwMmYwNDUzN2ZiNjk0OGRmMDdkZGM3NTlhY2UmWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0In0.SaXQaf3EEQ-ojO8vfIJ743HAsGzz3np7DeTROLZ1u1U))](https://youtu.be/qXYsH64pEyA)
 
 ---
 
