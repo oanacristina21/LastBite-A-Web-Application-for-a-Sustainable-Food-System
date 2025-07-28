@@ -1,0 +1,194 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlserver"
+  url      = env("DATABASE_URL")
+}
+
+model UTILIZATOR {
+  IdUtilizator         Int         @id @default(autoincrement())
+  Email                String      @unique @db.NVarChar(255)
+  Parola               String      @db.NVarChar(255)
+  Nr_Telefon           String      @unique @db.NVarChar(20)
+  IdLocalitate         Int
+  passwordResetExpires DateTime?   @db.DateTime
+  passwordResetToken   String?     @db.NVarChar(255)
+  ADMIN                ADMIN?
+  CLIENT               CLIENT?
+  RESTAURANT           RESTAURANT?
+  LOCALITATE           LOCALITATE  @relation(fields: [IdLocalitate], references: [IdLocalitate], onUpdate: NoAction)
+}
+
+model CLIENT {
+  IdUtilizator Int        @id
+  Nume         String     @db.NVarChar(100)
+  Prenume      String     @db.NVarChar(100)
+  UTILIZATOR   UTILIZATOR @relation(fields: [IdUtilizator], references: [IdUtilizator], onUpdate: NoAction)
+  COMANDA      COMANDA[]
+}
+
+model RESTAURANT {
+  IdRestaurant Int        @id @default(autoincrement())
+  Denumire     String
+  Adresa       String
+  IdUtilizator Int        @unique
+  IdLocalitate Int
+  Latitude     Float?
+  Longitude    Float?
+  COMENZI      COMANDA[]  @relation("FK_COMANDA_RESTAURANT")
+  OFERTE       OFERTA[]   @relation("FK_OFERTA_RESTAURANT")
+  PRODUSE      PRODUS[]   @relation("FK_PRODUS_RESTAURANT")
+  LOCALITATE   LOCALITATE @relation(fields: [IdLocalitate], references: [IdLocalitate], onUpdate: NoAction)
+  UTILIZATOR   UTILIZATOR @relation(fields: [IdUtilizator], references: [IdUtilizator], onUpdate: NoAction)
+}
+
+model COMANDA {
+  IdComanda       Int              @id @default(autoincrement())
+  NrComanda       String           @db.NVarChar(50)
+  DataComanda     DateTime         @db.DateTimeOffset
+  StatusComanda   String           @db.NVarChar(50)
+  AdresaColectare String           @db.NVarChar(255)
+  IdClient        Int
+  IdRestaurant    Int
+  CodRidicare     String?          @unique(map: "unq_CodRidicare") @db.NVarChar(100)
+  CLIENT          CLIENT           @relation(fields: [IdClient], references: [IdUtilizator], onUpdate: NoAction)
+  RESTAURANT      RESTAURANT       @relation("FK_COMANDA_RESTAURANT", fields: [IdRestaurant], references: [IdRestaurant], onUpdate: NoAction)
+  COMANDA_PRODUS  COMANDA_PRODUS[]
+  NOTIFICARE      NOTIFICARE[]
+  PLATA           PLATA?
+  RECENZIE        RECENZIE?
+
+  @@unique([IdClient, IdRestaurant, DataComanda])
+  @@unique([NrComanda, DataComanda])
+}
+
+model COMANDA_PRODUS {
+  IdComandaProdus    Int      @id @default(autoincrement())
+  IdComanda          Int
+  IdProdus           Int
+  CantitateComandata Int
+  PretFinal          Decimal? @db.Decimal(10, 2)
+  COMANDA            COMANDA  @relation(fields: [IdComanda], references: [IdComanda], onUpdate: NoAction)
+  PRODUS             PRODUS   @relation(fields: [IdProdus], references: [IdProdus], onUpdate: NoAction)
+}
+
+model PRODUS {
+  IdProdus          Int                 @id @default(autoincrement())
+  Denumire          String              @db.NVarChar(200)
+  Descriere         String?             @db.NVarChar(Max)
+  Pret_Initial      Decimal             @db.Decimal(10, 2)
+  DataInregistrare  DateTime
+  DataProducere     DateTime?           @db.DateTimeOffset
+  DataExpirare      DateTime            @db.DateTimeOffset
+  IdCategorie       Int
+  IdRestaurant      Int
+  Imagine           String?             @db.NVarChar(255)
+  COMANDA_PRODUS    COMANDA_PRODUS[]
+  OFERTA            OFERTA[]
+  CATEGORIE         CATEGORIE           @relation(fields: [IdCategorie], references: [IdCategorie], onUpdate: NoAction)
+  RESTAURANT        RESTAURANT          @relation("FK_PRODUS_RESTAURANT", fields: [IdRestaurant], references: [IdRestaurant], onUpdate: NoAction)
+  PRODUS_PREFERINTA PRODUS_PREFERINTA[]
+  STOC              STOC[]
+
+  @@unique([Denumire, IdRestaurant])
+}
+
+model OFERTA {
+  IdOferta     Int        @id @default(autoincrement())
+  DataInceput  DateTime   @db.DateTimeOffset
+  DataSfarsit  DateTime   @db.DateTimeOffset
+  Reducere     Decimal    @db.Decimal(5, 2)
+  IdProdus     Int
+  IdRestaurant Int
+  PRODUS       PRODUS     @relation(fields: [IdProdus], references: [IdProdus], onUpdate: NoAction)
+  RESTAURANT   RESTAURANT @relation("FK_OFERTA_RESTAURANT", fields: [IdRestaurant], references: [IdUtilizator], onUpdate: NoAction)
+
+  @@unique([IdProdus, IdRestaurant, DataInceput])
+  @@unique([IdProdus, IdRestaurant, DataSfarsit])
+}
+
+model LOCALITATE {
+  IdLocalitate Int          @id @default(autoincrement())
+  Denumire     String       @db.NVarChar(100)
+  IdJudet      Int
+  JUDET        JUDET        @relation(fields: [IdJudet], references: [IdJudet], onUpdate: NoAction)
+  RESTAURANTE  RESTAURANT[]
+  UTILIZATOR   UTILIZATOR[]
+}
+
+model JUDET {
+  IdJudet    Int          @id @default(autoincrement())
+  Denumire   String       @unique @db.NVarChar(100)
+  LOCALITATE LOCALITATE[]
+}
+
+model CATEGORIE {
+  IdCategorie Int      @id @default(autoincrement())
+  Denumire    String   @unique @db.NVarChar(100)
+  PRODUS      PRODUS[]
+}
+
+model NOTIFICARE {
+  IdNotificare      Int      @id @default(autoincrement())
+  Mesaj             String   @db.NVarChar(Max)
+  IdComanda         Int
+  DataOraNotificare DateTime @db.DateTimeOffset
+  Destinatar        String?  @db.NVarChar(50)
+  Citita            Boolean  @default(false)
+  COMANDA           COMANDA  @relation(fields: [IdComanda], references: [IdComanda], onUpdate: NoAction)
+}
+
+model PLATA {
+  IdPlata      Int     @id @default(autoincrement())
+  SumaTotala   Decimal @db.Decimal(10, 2)
+  MetodaPlata  String  @db.NVarChar(50)
+  Status_Plata String  @db.NVarChar(50)
+  IdComanda    Int     @unique
+  StripeSessionId  String? @db.NVarChar(255) 
+  StripePaymentId  String? @db.NVarChar(255)
+  COMANDA      COMANDA @relation(fields: [IdComanda], references: [IdComanda], onUpdate: NoAction)
+}
+
+model RECENZIE {
+  IdRecenzie        Int      @id @default(autoincrement())
+  MesajClient       String?  @db.NVarChar(Max)
+  Rating            Int
+  RaspunsRestaurant String?  @db.NVarChar(Max)
+  DataRecenzie      DateTime @db.DateTimeOffset
+  IdComanda         Int      @unique
+  COMANDA           COMANDA  @relation(fields: [IdComanda], references: [IdComanda], onUpdate: NoAction)
+}
+
+model PREFERINTE_DIETETICE {
+  IdPreferintaDietetica Int                 @id @default(autoincrement())
+  Denumire              String              @unique @db.NVarChar(100)
+  PRODUS_PREFERINTA     PRODUS_PREFERINTA[]
+}
+
+model PRODUS_PREFERINTA {
+  IdProdusPreferinta    Int                  @id @default(autoincrement())
+  IdProdus              Int
+  IdPreferintaDietetica Int
+  PREFERINTE_DIETETICE  PREFERINTE_DIETETICE @relation(fields: [IdPreferintaDietetica], references: [IdPreferintaDietetica], onUpdate: NoAction)
+  PRODUS                PRODUS               @relation(fields: [IdProdus], references: [IdProdus], onUpdate: NoAction)
+
+  @@unique([IdProdus, IdPreferintaDietetica])
+}
+
+model STOC {
+  IdStoc       Int      @id @default(autoincrement())
+  Cant_Disp    Int
+  DataValab  DateTime @db.DateTimeOffset @default(now())
+  IdProdus     Int
+  PRODUS       PRODUS   @relation(fields: [IdProdus], references: [IdProdus], onUpdate: NoAction)
+
+  @@unique([IdProdus, DataValab])
+}
+
+model ADMIN {
+  IdAdmin      Int        @id(map: "PK__ADMIN__4C3F97F47106C205") @default(autoincrement())
+  IdUtilizator Int        @unique(map: "UQ__ADMIN__99101D6C0AFE636E")
+  UTILIZATOR   UTILIZATOR @relation(fields: [IdUtilizator], references: [IdUtilizator], onUpdate: NoAction, map: "FK_Admin_Utilizator")
+}
