@@ -11,7 +11,7 @@
 
 > 🎓 This project was developed as a **Bachelor's Thesis** at the **Faculty of Mathematics and Computer Science, Ovidius University of Constanța**.
 
-![LastBite Demo GIF](https://link-to-your-demo-gif.gif)
+![LastBite Demo GIF](https://drive.google.com/file/d/1kwT_MOHo10-5cdx4ECHo78AMW-MkVrY4/view?usp=sharing)
 
 ---
 
